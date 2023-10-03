@@ -12,15 +12,15 @@ class MyUserManager(BaseUserManager):
 
     def create_user(
         self,
-        nickname: str,
+        email: str,
         password: str
     ) -> 'MyUser':
 
-        if not nickname:
-            raise ValidationError('nickname required')
+        if not email:
+            raise ValidationError('email required')
 
         custom_user: 'MyUser' = self.model(
-            nickname=nickname,
+            email=self.normalize_email(email),
             password=password
         )
         custom_user.set_password(password)
@@ -29,17 +29,16 @@ class MyUserManager(BaseUserManager):
 
     def create_superuser(
         self,
-        nickname: str,
+        email: str,
         password: str
     ) -> 'MyUser':
 
         custom_user: 'MyUser' = self.model(
-            nickname=nickname,
+            email=self.normalize_email(email),
             password=password
         )
         custom_user.is_superuser = True
         custom_user.is_active = True
-        custom_user.is_staff = True
         custom_user.set_password(password)
         custom_user.save(using=self._db)
         return
@@ -54,7 +53,6 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     )
     nickname = models.CharField(
         verbose_name='ник',
-        unique=True,
         max_length=20
     )
     name = models.CharField(
@@ -104,7 +102,7 @@ class Publications(models.Model):
         REEL = 'reel'
         IMAGE = 'image'
 
-    type = models.CharField(
+    p_type = models.CharField(
         verbose_name='валюта',
         max_length=6,
         choices=Types.choices,
