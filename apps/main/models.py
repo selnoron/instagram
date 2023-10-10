@@ -65,7 +65,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     )
     avatar = models.ImageField(
         verbose_name="изображение",
-        upload_to='images/'
+        upload_to='images/',
+        null=True
     )
     
     objects = MyUserManager()

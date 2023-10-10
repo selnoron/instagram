@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -20,7 +20,6 @@ from main.serializer import (
 from rest_framework.validators import ValidationError
 
 
-
 class UserViewSet(viewsets.ViewSet):
     queryset = MyUser.objects.all()
     def list(
@@ -70,55 +69,26 @@ class UserViewSet(viewsets.ViewSet):
                     f"Game {user.nickname} is created! ID: {user.pk}"
             }
         )
-class UserViewSet(viewsets.ViewSet):
-    queryset = MyUser.objects.all()
-    def list(
-        self,
-        request: Request,
-        *args: tuple,
-        **kwargs: dict,
-    ) -> Response:
-        serializer: UserSerializer = UserSerializer(
-            instance=self.queryset, many=True
-        )
-        return Response(
-            data=serializer.data
-        )
     
-    def retrieve(
+    def destroy(
         self,
         request: Request,
-        pk: int = None
+        pk = None,
+        *args: tuple,
+        **kwargs: dict
     ) -> Response:
         try:
-            user = self.queryset.get(pk=pk)
-        except MyUser.DoesNotExist:
-            raise ValidationError('Object Does NOT exists', code=404)
-        serializer = UserSerializer(
-            instance=user
-        )
-        return Response(
-            data=serializer.data
-        )
-    
-    def create(
-        self,
-        request: Request,
-        *args: tuple,
-        **kwargs: dict,
-    ) -> Response:
-        serializer = UserCreateSerializer(
-            data=request.data
-        )
-        serializer.is_valid(raise_exception=True)
-        user: MyUser = serializer.save()
-        return Response(
-            data={
-                'status': 'ok',
-                'message': \
-                    f"Game {user.nickname} is created! ID: {user.pk}"
-            }
-        )
+            user = get_object_or_404(MyUser, pk=pk)
+            user.delete()
+            return Response(
+                data={
+                    'status':'ok',
+                    'message':f'User {user.nickname} is deleted!'
+                }
+            )
+        except user.DoesNotExist:
+            raise ValidationError('User with such an ID does not exist',code=404)
+        
     
 class FollowersViewSet(viewsets.ViewSet):
     queryset = Followers.objects.all()
@@ -169,6 +139,25 @@ class FollowersViewSet(viewsets.ViewSet):
                     f"Game {followers.nickname} is created! ID: {followers.pk}"
             }
         )
+    
+    def destroy(
+        self,
+        request: Request,
+        pk = None,
+        *args: tuple,
+        **kwargs: dict
+    ) -> Response:
+        try:
+            fol = get_object_or_404(Followers, pk=pk)
+            fol.delete()
+            return Response(
+                data={
+                    'status':'ok',
+                    'message':f'{fol.follower} {fol.following} are not following now!'
+                }
+            )
+        except fol.DoesNotExist:
+            raise ValidationError('Followers with such an ID does not exist',code=404)
     
 
 class PublicationViewSet(viewsets.ViewSet):
@@ -221,6 +210,25 @@ class PublicationViewSet(viewsets.ViewSet):
             }
         )
     
+    def destroy(
+        self,
+        request: Request,
+        pk = None,
+        *args: tuple,
+        **kwargs: dict
+    ) -> Response:
+        try:
+            pub = get_object_or_404(Publications, pk=pk)
+            pub.delete()
+            return Response(
+                data={
+                    'status':'ok',
+                    'message':f'Publication is deleted!'
+                }
+            )
+        except pub.DoesNotExist:
+            raise ValidationError('Publication with such an ID does not exist',code=404)
+    
 
 class LikesViewSet(viewsets.ViewSet):
     queryset = Likes.objects.all()
@@ -272,6 +280,25 @@ class LikesViewSet(viewsets.ViewSet):
             }
         )
     
+    def destroy(
+        self,
+        request: Request,
+        pk = None,
+        *args: tuple,
+        **kwargs: dict
+    ) -> Response:
+        try:
+            like = get_object_or_404(Likes, pk=pk)
+            like.delete()
+            return Response(
+                data={
+                    'status':'ok',
+                    'message':f'Like is deleted!'
+                }
+            )
+        except like.DoesNotExist:
+            raise ValidationError('Like with such an ID does not exist',code=404)
+    
 
 class CommentViewSet(viewsets.ViewSet):
     queryset = Comments.objects.all()
@@ -322,6 +349,25 @@ class CommentViewSet(viewsets.ViewSet):
                     f"Game {comment.nickname} is created! ID: {comment.pk}"
             }
         )
+    
+    def destroy(
+        self,
+        request: Request,
+        pk = None,
+        *args: tuple,
+        **kwargs: dict
+    ) -> Response:
+        try:
+            comment = get_object_or_404(Comments, pk=pk)
+            comment.delete()
+            return Response(
+                data={
+                    'status':'ok',
+                    'message':f'Comment is deleted!'
+                }
+            )
+        except comment.DoesNotExist:
+            raise ValidationError('Comment with such an ID does not exist',code=404)
     
 
 class ViewViewSet(viewsets.ViewSet):

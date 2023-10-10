@@ -11,7 +11,6 @@ class UserSerializer(serializers.Serializer):
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    rate = serializers.FloatField(default=0)
     class Meta:
         model = MyUser
         fields = ['email', 
@@ -24,12 +23,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class FollowersSerializer(serializers.Serializer):
-    follower = serializers.IntegerField()
-    following = serializers.IntegerField()
+    follower = UserCreateSerializer(many=True)
+    following = UserCreateSerializer(many=True)
 
 
 class FollowersCreateSerializer(serializers.ModelSerializer):
-    rate = serializers.FloatField(default=0)
     class Meta:
         model = MyUser
         fields = ['follower', 
@@ -40,12 +38,11 @@ class FollowersCreateSerializer(serializers.ModelSerializer):
 
 class PublicationsSerializer(serializers.Serializer):
     p_type = serializers.CharField()
-    author = serializers.IntegerField()
+    author = UserCreateSerializer(many=True)
     file = serializers.FileField()
 
 
 class PublicationsCreateSerializer(serializers.ModelSerializer):
-    rate = serializers.FloatField(default=0)
     class Meta:
         model = MyUser
         fields = ['p_type', 
@@ -56,12 +53,11 @@ class PublicationsCreateSerializer(serializers.ModelSerializer):
 
 
 class LikesSerializer(serializers.Serializer):
-    author = serializers.IntegerField()
-    publication = serializers.IntegerField()
+    author = UserCreateSerializer(many=True)
+    publication = PublicationsCreateSerializer(many=True)
 
 
 class LikesCreateSerializer(serializers.ModelSerializer):
-    rate = serializers.FloatField(default=0)
     class Meta:
         model = MyUser
         fields = ['author', 
@@ -71,13 +67,12 @@ class LikesCreateSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.Serializer):
-    author = serializers.IntegerField()
-    publication = serializers.IntegerField()
+    author = UserCreateSerializer(many=True)
+    publication = PublicationsCreateSerializer(many=True)
     text = serializers.CharField()
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):
-    rate = serializers.FloatField(default=0)
     class Meta:
         model = MyUser
         fields = ['author', 
@@ -88,12 +83,11 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 
 class ViewSerializer(serializers.Serializer):
-    author = serializers.IntegerField()
-    publication = serializers.IntegerField()
+    author = UserCreateSerializer(many=True)
+    publication = PublicationsCreateSerializer(many=True)
 
 
 class ViewCreateSerializer(serializers.ModelSerializer):
-    rate = serializers.FloatField(default=0)
     class Meta:
         model = MyUser
         fields = ['author', 
