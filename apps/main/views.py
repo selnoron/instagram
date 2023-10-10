@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets
+from django.shortcuts import render, get_object_or_404, redirect
+from rest_framework import viewsets, filters
 from rest_framework.request import Request
 from rest_framework.response import Response
 from main.models import MyUser, Followers, Publications, Likes, View, Comments
@@ -18,16 +18,23 @@ from main.serializer import (
     ViewCreateSerializer
     )
 from rest_framework.validators import ValidationError
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 class UserViewSet(viewsets.ViewSet):
     queryset = MyUser.objects.all()
+    
+
     def list(
         self,
         request: Request,
         *args: tuple,
         **kwargs: dict,
     ) -> Response:
+        filter_backends = [
+            filters.SearchFilter,
+        ]
+        search_fields = ['=email']
         serializer: UserSerializer = UserSerializer(
             instance=self.queryset, many=True
         )
@@ -419,3 +426,22 @@ class ViewViewSet(viewsets.ViewSet):
                     f"Game {view.nickname} is created! ID: {view.pk}"
             }
         )
+    
+
+class UserFilterSet(viewsets.ModelViewSet):
+    queryset = MyUser.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['id', 'nickname']
+    search_fields = ['^email', '^nickname', '^description']
+    ordering_fields = ['nickname', 'id']
+    ordering = ['id']
+
+class PublicationsFilterSet(viewsets.ModelViewSet):
+    queryset = Publications.objects.all()
+    serializer_class = PublicationsSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['id', 'author']
+    search_fields = ['^text', '^author']
+    ordering_fields = ['nickname', 'id']
+    ordering = ['id']

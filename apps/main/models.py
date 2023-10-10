@@ -39,6 +39,7 @@ class MyUserManager(BaseUserManager):
         )
         custom_user.is_superuser = True
         custom_user.is_active = True
+        custom_user.is_staff = True
         custom_user.set_password(password)
         custom_user.save(using=self._db)
         return
@@ -67,6 +68,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         verbose_name="изображение",
         upload_to='images/',
         null=True
+    )
+    is_staff = models.BooleanField(
+        verbose_name='staff',
+        default=False
     )
     
     objects = MyUserManager()

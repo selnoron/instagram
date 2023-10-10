@@ -10,23 +10,29 @@ from main.views import (
     PublicationViewSet,
     LikesViewSet,
     CommentViewSet,
-    ViewViewSet
+    ViewViewSet,
+    UserFilterSet,
+    PublicationsFilterSet
 )
 
 router = DefaultRouter()
+router2 = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
 router.register(r'followers', FollowersViewSet, basename='follower')
 router.register(r'publications', PublicationViewSet, basename='publications')
 router.register(r'likes', LikesViewSet, basename='likes')
 router.register(r'comments', CommentViewSet, basename='comment')
-router.register(r'View', ViewViewSet, basename='view')
+router.register(r'view', ViewViewSet, basename='view')
+router2.register(r'user_search', UserFilterSet, basename='user_search')
+router2.register(r'publications_search', PublicationsFilterSet, basename='pubs_search')
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('search/', include(router2.urls))
 ]
 
 

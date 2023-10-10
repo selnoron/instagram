@@ -14,6 +14,7 @@ DEBUG = config('DEBUG', bool)
 ALLOWED_HOSTS = ['*']
 
 DJANGO_APPS = [
+    'django_filters',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -23,10 +24,16 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
 ]
+
 PROJECT_APPS = [
     'main.apps.MainConfig'
 ]
+
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

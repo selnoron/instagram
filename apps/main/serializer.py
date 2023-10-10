@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from main.models import MyUser
+from main.models import MyUser, Followers, Publications, Likes, Comments, View
 
 
 class UserSerializer(serializers.Serializer):
@@ -23,13 +23,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class FollowersSerializer(serializers.Serializer):
-    follower = UserCreateSerializer(many=True)
-    following = UserCreateSerializer(many=True)
+    follower = UserSerializer(many=False, read_only=True)
+    following = UserSerializer(many=False, read_only=True)
 
 
 class FollowersCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyUser
+        model = Followers
         fields = ['follower', 
                   'following'
                 ]
@@ -38,13 +38,13 @@ class FollowersCreateSerializer(serializers.ModelSerializer):
 
 class PublicationsSerializer(serializers.Serializer):
     p_type = serializers.CharField()
-    author = UserCreateSerializer(many=True)
+    author = UserSerializer(many=False, read_only=True)
     file = serializers.FileField()
 
 
 class PublicationsCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyUser
+        model = Publications
         fields = ['p_type', 
                   'author',
                   'file'
@@ -53,13 +53,13 @@ class PublicationsCreateSerializer(serializers.ModelSerializer):
 
 
 class LikesSerializer(serializers.Serializer):
-    author = UserCreateSerializer(many=True)
-    publication = PublicationsCreateSerializer(many=True)
+    author = UserSerializer(many=False, read_only=True)
+    publication = PublicationsSerializer(many=False, read_only=True)
 
 
 class LikesCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyUser
+        model = Likes
         fields = ['author', 
                   'publication'
                 ]
@@ -67,14 +67,14 @@ class LikesCreateSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.Serializer):
-    author = UserCreateSerializer(many=True)
-    publication = PublicationsCreateSerializer(many=True)
+    author = UserSerializer(many=False, read_only=True)
+    publication = PublicationsSerializer(many=False, read_only=True)
     text = serializers.CharField()
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyUser
+        model = Comments
         fields = ['author', 
                   'publication',
                   'text'
@@ -83,13 +83,13 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 
 class ViewSerializer(serializers.Serializer):
-    author = UserCreateSerializer(many=True)
-    publication = PublicationsCreateSerializer(many=True)
+    author = UserSerializer(many=False, read_only=True)
+    publication = PublicationsSerializer(many=False, read_only=True)
 
 
 class ViewCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MyUser
+        model = View
         fields = ['author', 
                   'publication'
                 ]
