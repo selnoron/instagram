@@ -22,6 +22,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework_simplejwt',
     'rest_framework',
 ]
 
@@ -111,3 +112,12 @@ STATIC_ROOT = 'static/'
 MEDIA_URL = 'media/'
 
 MEDIA_ROOT = 'media/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+
+from settings.jwt import SIMPLE_JWT

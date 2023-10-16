@@ -20,10 +20,14 @@ from main.serializer import (
 from rest_framework.validators import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import (
+    IsAuthenticated
+)
 
 class UserViewSet(viewsets.ViewSet):
     queryset = MyUser.objects.all()
-    
+    permission_classes = [IsAuthenticated]
+
 
     def list(
         self,
