@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from main.models import MyUser, Followers, Publications, Likes, Comments, View
+from main.models import MyUser, Followers, Publications, History, Likes, Comments, View
 
 
 class UserSerializer(serializers.Serializer):
@@ -51,6 +51,22 @@ class PublicationsCreateSerializer(serializers.ModelSerializer):
                 ]
         
 
+class HistorySerializer(serializers.Serializer):
+    author = UserSerializer(many=False, read_only=True)
+    file = serializers.FileField()
+    created_at = serializers.DateTimeField()
+    expiration_date = serializers.DateTimeField()
+
+
+class HistoryCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = History
+        fields = ['author',
+                  'file',
+                  'created_at',
+                  'expiration_date'
+                ]
+        
 
 class LikesSerializer(serializers.Serializer):
     author = UserSerializer(many=False, read_only=True)

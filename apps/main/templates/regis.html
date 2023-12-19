@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inst-REGIS</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <form action="#" class="invis" method="post"> {% csrf_token %}
+            <div class="dmm"> <!-- hellogiving -->
+                <span class="text">
+                    Instagram
+                </span> 
+            </div>
+            <div class="dm"> <!-- email -->
+                <div>
+                    <span class="r">email</span><br>
+                    <input type="text" name="email" class="em">
+                </div>
+            </div>
+            <div class="dm"> <!-- nickname -->
+                <div>
+                    <span class="r1">nickname</span><br>
+                    <input type="text" name="nickname" class="em">
+                </div>
+            </div>
+            <div class="dm"> <!-- password -->
+                <div>
+                    <span class="r2">password</span><br>
+                    <input type="text" name="password" class="em">
+                </div>
+            </div>
+            <div class="dm"> <!-- repeat password -->
+                <div>
+                    <span class="r3">repeat password</span><br>
+                    <input type="text" name="repeat_password" class="em">
+                </div>
+            </div>
+            <div class="dm"> <!-- submit -->
+                <div>
+                    <br>
+                    <input type="submit" value="sign up" class="but">
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

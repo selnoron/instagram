@@ -1,6 +1,6 @@
 from django.db import models
-
-
+import datetime
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.query import QuerySet
@@ -13,6 +13,7 @@ class MyUserManager(BaseUserManager):
     def create_user(
         self,
         email: str,
+        nickname: str,
         password: str
     ) -> 'MyUser':
 
@@ -21,6 +22,7 @@ class MyUserManager(BaseUserManager):
 
         custom_user: 'MyUser' = self.model(
             email=self.normalize_email(email),
+            nickname=nickname,
             password=password
         )
         custom_user.set_password(password)
@@ -58,11 +60,13 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     )
     name = models.CharField(
         verbose_name='настоящее имя пользователя',
-        max_length=20
+        max_length=20,
+        null=True
     ),
     description = models.CharField(
         verbose_name='описание',
-        max_length=20
+        max_length=200,
+        null=True
     )
     avatar = models.ImageField(
         verbose_name="изображение",
@@ -104,7 +108,6 @@ class Followers(models.Model):
 
 class Publications(models.Model):
     class Types(models.TextChoices):
-        STATUS = 'status'
         REEL = 'reel'
         IMAGE = 'image'
 
@@ -120,10 +123,25 @@ class Publications(models.Model):
         to=MyUser,
         on_delete=models.CASCADE
     )
-    file = models.ImageField(
-        verbose_name="изображение",
-        upload_to='games/'
+    file = models.FileField(
+        verbose_name="пост",
+        upload_to='img/'
     )
+
+
+class History(models.Model):
+    author = models.ForeignKey(
+        verbose_name='автор истории',
+        related_name='histories',
+        to=MyUser,
+        on_delete=models.CASCADE
+    )
+    file = models.FileField(
+        verbose_name="история",
+        upload_to='img/'
+    )
+    created_at = models.DateTimeField(default=timezone.now)
+    expiration_date = models.DateTimeField(default=(timezone.now() + datetime.timedelta(days=1)))
 
 
 class Likes(models.Model):

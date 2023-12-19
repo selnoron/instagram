@@ -2,14 +2,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import viewsets, filters
 from rest_framework.request import Request
 from rest_framework.response import Response
-from main.models import MyUser, Followers, Publications, Likes, View, Comments
+from main.models import MyUser, Followers, Publications, History, Likes, View, Comments
 from main.serializer import (
     UserSerializer, 
     UserCreateSerializer, 
     FollowersSerializer, 
-    FollowersCreateSerializer,
+    FollowersCreateSerializer,  
     PublicationsSerializer,
     PublicationsCreateSerializer,
+    HistorySerializer,
+    HistoryCreateSerializer,
     LikesSerializer,
     LikesCreateSerializer,
     CommentSerializer,
@@ -20,13 +22,12 @@ from main.serializer import (
 from rest_framework.validators import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.permissions import (
-    IsAuthenticated
-)
+import datetime
+from django.http import HttpResponse
+
 
 class UserViewSet(viewsets.ViewSet):
     queryset = MyUser.objects.all()
-    permission_classes = [IsAuthenticated]
 
 
     def list(
@@ -42,8 +43,8 @@ class UserViewSet(viewsets.ViewSet):
         serializer: UserSerializer = UserSerializer(
             instance=self.queryset, many=True
         )
-        return Response(
-            data=serializer.data
+        return HttpResponse(
+            f'HELLO <br/>{serializer.data}'
         )
     
     def retrieve(
@@ -240,6 +241,81 @@ class PublicationViewSet(viewsets.ViewSet):
         except pub.DoesNotExist:
             raise ValidationError('Publication with such an ID does not exist',code=404)
     
+
+class HistoryViewSet(viewsets.ViewSet):
+    queryset = History.objects.all()
+    for i in queryset:
+        if i.expiration_date.timestamp() <= datetime.datetime.now().timestamp():
+            i.delete()
+            print(12334)
+
+    def list(
+        self,
+        request: Request,
+        *args: tuple,
+        **kwargs: dict,
+    ) -> Response:
+        serializer: HistorySerializer = HistorySerializer(
+            instance=self.queryset, many=True
+        )
+        return Response(
+            data=serializer.data
+        )
+    
+    def retrieve(
+        self,
+        request: Request,
+        pk: int = None
+    ) -> Response:
+        try:
+            publication = self.queryset.get(pk=pk)
+        except History.DoesNotExist:
+            raise ValidationError('Object Does NOT exists', code=404)
+        serializer = HistorySerializer(
+            instance=publication
+        )
+        return Response(
+            data=serializer.data
+        )
+    
+    def create(
+        self,
+        request: Request,
+        *args: tuple,
+        **kwargs: dict,
+    ) -> Response:
+        serializer = HistoryCreateSerializer(
+            data=request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        publication: History = serializer.save()
+        return Response(
+            data={
+                'status': 'ok',
+                'message': \
+                    f"Game {publication.nickname} is created! ID: {publication.pk}"
+            }
+        )
+    
+    def destroy(
+        self,
+        request: Request,
+        pk = None,
+        *args: tuple,
+        **kwargs: dict
+    ) -> Response:
+        try:
+            pub = get_object_or_404(Publications, pk=pk)
+            pub.delete()
+            return Response(
+                data={
+                    'status':'ok',
+                    'message':f'Publication is deleted!'
+                }
+            )
+        except pub.DoesNotExist:
+            raise ValidationError('Publication with such an ID does not exist',code=404)
+
 
 class LikesViewSet(viewsets.ViewSet):
     queryset = Likes.objects.all()

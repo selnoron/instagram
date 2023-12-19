@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inst-PUB</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="main2">
+        <form action="#" class="invis" method="post"> {% csrf_token %}
+            <div class="dm"> <!-- email -->
+                <div>
+                    <span class="r4">choose type of publication</span><br>
+                    <input type="radio" class="em1" name="ty" id="type"> 
+                    <span for="type">image</span> <br>
+                    <input type="radio" class="em2" name="ty" id="type">
+                    <span for="type">reel</span>
+                </div>
+            </div>
+            <div class="dm"> <!-- password -->
+                <div>
+                    <span class="r2">choose file</span><br>
+                    <input type="file" name="password" class="em3">
+                </div>
+            </div>
+            <div class="dm"> <!-- submit -->
+                <div>
+                    <br>
+                    <input type="submit" value="create" class="but">
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inst-USERS</title>
+    <link rel="stylesheet" href="../static/css/us_li.css">
+</head>
+<body>
+    <main>
+        <form action="" method="post">  {% csrf_token %}
+            <div class="us">
+                <div class="usav">
+                    <img 
+                        src="https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2021/11/avatar-2536561.jpg?tf=3840x" 
+                        alt=""
+                        class="uav"
+                    >
+                </div>
+                <div class="un">
+                    <span class="niu" name="selnoron">selnoron</span>
+                </div>
+                <div class="sus">
+                    <input type="submit" value="sub">
+                </div>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
