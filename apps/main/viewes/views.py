@@ -24,6 +24,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 import datetime
 from django.http import HttpResponse
+from rest_framework.decorators import action
 
 
 class UserViewSet(viewsets.ViewSet):
@@ -247,7 +248,6 @@ class HistoryViewSet(viewsets.ViewSet):
     for i in queryset:
         if i.expiration_date.timestamp() <= datetime.datetime.now().timestamp():
             i.delete()
-            print(12334)
 
     def list(
         self,

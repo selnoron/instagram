@@ -19,6 +19,8 @@ class MyUserManager(BaseUserManager):
 
         if not email:
             raise ValidationError('email required')
+        if not nickname:
+            raise ValidationError('nickname required')
 
         custom_user: 'MyUser' = self.model(
             email=self.normalize_email(email),
