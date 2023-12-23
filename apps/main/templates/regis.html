@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inst-REGIS</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" href=" {% static '/css/style.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="main">
-        <form action="#" class="invis" method="post"> {% csrf_token %}
+    <div class="main" >
+        <form action="" class="invis" method="post"> {% csrf_token %}
             <div class="dmm"> <!-- hellogiving -->
                 <span class="text">
                     Instagram
@@ -28,6 +28,24 @@
                 <div>
                     <span class="r1">nickname</span><br>
                     <input type="text" name="nickname" class="em">
+                </div>
+            </div>
+            <div class="dm"> <!-- nickname -->
+                <div>
+                    <span class="r">name</span><br>
+                    <input type="text" name="name" class="em">
+                </div>
+            </div>
+            <div class="dm"> <!-- nickname -->
+                <div>
+                    <span class="r1">description</span><br>
+                    <input type="text" name="description" class="em">
+                </div>
+            </div>
+            <div class="dm"> <!-- nickname -->
+                <div>
+                    <span class="r">avatar</span><br>
+                    <input type="file" name="avatar" class="em">
                 </div>
             </div>
             <div class="dm"> <!-- password -->

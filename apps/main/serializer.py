@@ -3,6 +3,7 @@ from main.models import MyUser, Followers, Publications, History, Likes, Comment
 
 
 class UserSerializer(serializers.Serializer):
+    pk = serializers.IntegerField()
     email = serializers.CharField()
     nickname = serializers.CharField()
     name = serializers.CharField()
@@ -37,6 +38,7 @@ class FollowersCreateSerializer(serializers.ModelSerializer):
 
 
 class PublicationsSerializer(serializers.Serializer):
+    pk = serializers.IntegerField()
     p_type = serializers.CharField()
     author = UserSerializer(many=False, read_only=True)
     file = serializers.FileField()
@@ -52,6 +54,7 @@ class PublicationsCreateSerializer(serializers.ModelSerializer):
         
 
 class HistorySerializer(serializers.Serializer):
+    pk = serializers.IntegerField()
     author = UserSerializer(many=False, read_only=True)
     file = serializers.FileField()
     created_at = serializers.DateTimeField()

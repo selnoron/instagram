@@ -14,6 +14,9 @@ class MyUserManager(BaseUserManager):
         self,
         email: str,
         nickname: str,
+        name: str,
+        description: str,
+        avatar: str,
         password: str
     ) -> 'MyUser':
 
@@ -25,6 +28,9 @@ class MyUserManager(BaseUserManager):
         custom_user: 'MyUser' = self.model(
             email=self.normalize_email(email),
             nickname=nickname,
+            name=name,
+            description=description,
+            avatar=avatar,
             password=password
         )
         custom_user.set_password(password)
@@ -64,7 +70,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         verbose_name='настоящее имя пользователя',
         max_length=20,
         null=True
-    ),
+    )
     description = models.CharField(
         verbose_name='описание',
         max_length=200,
@@ -159,6 +165,9 @@ class Likes(models.Model):
         to=Publications,
         on_delete=models.CASCADE
     )
+
+    class Meta:
+        unique_together = ['author', 'publication']
 
 class Comments(models.Model):
     author = models.ForeignKey(

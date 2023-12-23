@@ -18,7 +18,7 @@
             </div>
             <div class="nlog2">
                 <div class="yog">
-                    <span class="nm_prof">selnoron</span>
+                    <span class="nm_prof">{{ user.nickname }}</span>
                 </div>
                 <div class="yog">
                     <a href="" class="a-prof">PROFILE</a>
@@ -28,23 +28,23 @@
         <div class="mn_cont">
             <div class="fr">
                 <div class="frinv">
-                    
-                    <div class="post">
+                    {% for post in posts %}
+                    <div class="post" id="{{ post.pk }}">
                         <div class="pfr">
                             <div class="prf1">
                                 <img 
-                                    src="https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2021/11/avatar-2536561.jpg?tf=3840x" 
+                                    src="{{ post.author.avatar }}" 
                                     alt="hello"
                                     class="pav"
                                 >
                             </div>
                             <div class="prf2">
-                                <span>selnoron</span>
+                                <span>{{ post.author.nickname }}</span>
                             </div>
                         </div>
                         <div class="pimg">
                             <img 
-                                src="https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/58f60527666431.56368c2348eca.jpg" 
+                                src="{{ post.file }}" 
                                 alt=""
                                 class="pima"
                             >
@@ -52,13 +52,13 @@
                         <div class="pcom">
                             <div class="plike">
                                 <div class="pl1">
-                                    <a href="">LIKE</a>
+                                    <a href="/inst/post/{{ post.pk }}/like/">❤</a>
                                 </div>
                                 <div class="pl2">
-                                    <span>3</span>
+                                    <span>{{ post.likes }}</span>
                                 </div>
                                 <div class="pl3">
-                                    <a href="" class="pll1">
+                                    <a href="/inst/post/{{ post.pk }}/comm/" class="pll1">
                                         <span class="pll1s">comments</span>
                                     </a>
                                 </div>
@@ -66,42 +66,44 @@
                         </div>
                     </div>
                     <br>
-        
+                    {% endfor %}
                 </div>
             </div>
             <div class="sc">
                 <div class="his">
                     <div class="hinv">
                         <div class="av">
-                            <a href="">
+                            <a href="/mk_his/">
                                 <img 
-                                    src="https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2021/11/avatar-2536561.jpg?tf=3840x" 
+                                    src="{{ user.avatar }}" 
                                     alt=""
                                     class="imav"
                                 >
                             </a>
                         </div>
                         <div class="hnick">
-                            <a href="" class="ahi">create</a>
+                            <a href="/mk_his/" class="ahi">create</a>
                         </div>
                     </div>
                 </div>
+                {% for his in hiss %}
                 <div class="his">
                     <div class="hinv">
                         <div class="av">
-                            <a href="">
+                            <a href="/inst/his/{{his.pk}}">
                                 <img 
-                                    src="https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2021/11/avatar-2536561.jpg?tf=3840x" 
+                                    src="{{ his.author.avatar }}" 
                                     alt=""
                                     class="imav"
                                 >
                             </a>
                         </div>
                         <div class="hnick">
-                            <span>selnoron</span>
+                            <span>{{ his.author.nickname }}</span>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </main>
