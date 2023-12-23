@@ -19,6 +19,9 @@ from main.serializer import (
     HistorySerializer,
     CommentSerializer
 )
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import uuid
+
 
 class AuthView(View):
     querylist: MyUser = MyUser.objects.all()
@@ -71,7 +74,16 @@ class RegisView(View):
     
     def post(self, request: HttpRequest) -> HttpResponse:
         data = request.POST
-        print(data)
+        files: dict = request.FILES
+
+        main_image: InMemoryUploadedFile = None
+        print(files)
+        if files != {}:
+            main_image = files.get('avatar')
+            main_image.name = f'{uuid.uuid1()}.png'
+        else:
+            main_image = 'avatars/unknown.png'
+        print(main_image)
         try:
             if data.get('password') == data.get('repeat_password'):
                 MyUser.objects.create_user(
@@ -79,7 +91,7 @@ class RegisView(View):
                     nickname=data.get("nickname"),
                     name=data.get("name"),
                     description=data.get("description"),
-                    avatar=data.get("avatar"),
+                    avatar=main_image,
                     password=data.get("password")
                 )
             return redirect('/auth/')
@@ -99,7 +111,6 @@ class ProfView(View):
             dat = PublicationsSerializer(instance=user.posts.all()[i]).data
             dat["likes"] = likes[i]
             posts.append(dat)
-            print(PublicationsSerializer(instance=user.posts.all()[i]).data)
         return render(
             request=request,
             template_name=template_name,
@@ -115,6 +126,10 @@ class MainView(View):
         template_name: str = 'main.html'
         user_s: dict = request.session["user"]
         user: MyUser = MyUser.objects.get(email=user_s.get("email"))
+        user = UserSerializer(
+            instance=user
+        ).data
+        print(user)
         pos: Publications = Publications.objects.all()
         likes: list[int] = \
             [len(Likes.objects.filter(publication=post)) for post in pos]
@@ -125,12 +140,11 @@ class MainView(View):
             posts.append(dat)
         his: History = History.objects.all()
         hiss = [HistorySerializer(his[i]).data for i in range(len(his))]
-        print(hiss)
         return render(
             request=request,
             template_name=template_name,
             context={
-                'user': user_s,
+                'user': user,
                 'posts': posts,
                 'hiss': hiss
             }

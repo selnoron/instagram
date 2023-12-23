@@ -78,8 +78,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     )
     avatar = models.ImageField(
         verbose_name="изображение",
-        upload_to='images/',
-        null=True
+        upload_to='avatars/',
+        default='avatars/unknown.png'
     )
     is_staff = models.BooleanField(
         verbose_name='staff',
