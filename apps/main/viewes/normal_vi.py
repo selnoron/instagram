@@ -9,7 +9,8 @@ from main.models import (
     Publications, 
     Likes,
     History,
-    Comments
+    Comments,
+    Followers
 )
 from rest_framework.validators import ValidationError
 from django.db import IntegrityError
@@ -17,7 +18,8 @@ from main.serializer import (
     UserSerializer,
     PublicationsSerializer,
     HistorySerializer,
-    CommentSerializer
+    CommentSerializer,
+    FollowersSerializer
 )
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import uuid
@@ -100,23 +102,33 @@ class RegisView(View):
 
 
 class ProfView(View):
-    def get(self, request: HttpRequest) -> HttpResponse:
-        template_name: str = 'main.html'
-        user_s: dict = request.session["user"]
-        user: MyUser = MyUser.objects.get(email=user_s.get("email"))
+    def get(self, request: HttpRequest, pk: int) -> HttpResponse:
+        template_name: str = 'profile.html'
+        user: MyUser = MyUser.objects.get(pk=pk)
         likes: list[int] = \
             [len(Likes.objects.filter(publication=post)) for post in user.posts.all()]
+        l_posts: int = len(user.posts.all())
         posts: list[dict] = []
         for i in range(len(user.posts.all())):
             dat = PublicationsSerializer(instance=user.posts.all()[i]).data
             dat["likes"] = likes[i]
             posts.append(dat)
+        fol: Followers = Followers.objects.filter(follower=user)
+        l_fol: int = len(fol)
+        fow: Followers = Followers.objects.filter(following=user)
+        l_fow: int = len(fol)
+        user = UserSerializer(
+            instance=user
+        ).data
         return render(
             request=request,
             template_name=template_name,
             context={
-                'user': user_s,
-                'posts': posts
+                'user': user,
+                'posts': posts,
+                'lposts': l_posts,
+                'lfol': l_fol,
+                'lfow': l_fow
             }
         )
 
@@ -126,10 +138,13 @@ class MainView(View):
         template_name: str = 'main.html'
         user_s: dict = request.session["user"]
         user: MyUser = MyUser.objects.get(email=user_s.get("email"))
+        fol: Followers = Followers.objects.filter(follower=user)
+        fols: Followers = []
+        for i in range(len(fol)):
+            fols.append(FollowersSerializer(fol[0]).data)
         user = UserSerializer(
             instance=user
         ).data
-        print(user)
         pos: Publications = Publications.objects.all()
         likes: list[int] = \
             [len(Likes.objects.filter(publication=post)) for post in pos]
@@ -138,7 +153,13 @@ class MainView(View):
             dat = PublicationsSerializer(instance=pos[i]).data
             dat["likes"] = likes[i]
             posts.append(dat)
-        his: History = History.objects.all()
+        his: History = []
+        for i in range(len(fols)):
+            his.append(
+                History.objects.filter(
+                    author=MyUser.objects.get(email=fols[i].get("following").get("email"))
+            )[0])
+        print(his)
         hiss = [HistorySerializer(his[i]).data for i in range(len(his))]
         return render(
             request=request,

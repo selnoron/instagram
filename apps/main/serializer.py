@@ -24,6 +24,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class FollowersSerializer(serializers.Serializer):
+    pk = serializers.IntegerField()
     follower = UserSerializer(many=False, read_only=True)
     following = UserSerializer(many=False, read_only=True)
 

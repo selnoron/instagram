@@ -6,7 +6,8 @@ from main.viewes.normal_vi import (
     LikeView,
     ComView,
     HisView,
-    DisView
+    DisView,
+    ProfView
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -19,7 +20,7 @@ urlpatterns = [
     path('inst/post/<int:pk>/like/', LikeView.as_view()),
     path('inst/post/<int:pk>/comm/', ComView.as_view()),
     path('inst/his/<int:pk>/', HisView.as_view()),
-    path('inst/us/<int:pk>/', HisView.as_view()),
+    path('inst/us/<int:pk>/', ProfView.as_view()),
     path('dis/', DisView.as_view())
 ]
 

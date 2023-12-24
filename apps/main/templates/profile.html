@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inst_PROF</title>
-    <link rel="stylesheet" href="../static/css/main_style.css">
-    <link rel="stylesheet" href="../static/css/prof_style.css">
+    <link rel="icon" type="image/png" href="/media/images/Inst_icon.png"/>
+    <link rel="stylesheet" href="{% static 'css/main_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/prof_styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -16,29 +17,39 @@
         <nav>
             <div class="nlog">
                 <img 
-                    src="https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2021/11/avatar-2536561.jpg?tf=3840x" 
+                    src="{{user.avatar}}" 
                     alt=""
                     class="imav"
                 >
                 <div class="nld">
-                    <span  class="tyu">selnoron</span>
+                    <span  class="tyu">{{ user.nickname }}</span>
                 </div>
             </div>
             <div class="nlog2">
                 <div class="yog">
                     <span class="nm_prof">Posts</span>
-                    <span class="nm">12</span>
+                    <span class="nm">{{ lposts }}</span>
                 </div>
                 <div class="yog">
                     <span class="nm_prof">Followers</span>
-                    <span class="nm">124</span>
+                    <span class="nm">{{ lfow }}</span>
                 </div>
                 <div class="yog">
                     <span class="nm_prof">Following</span>
-                    <span class="nm">123</span>
+                    <span class="nm">{{ lfol }}</span>
                 </div>
             </div>
         </nav>
+        <div class="n_d_m">
+            <div class="n_d_m_1">
+                <span class="name">Selno Ron</span>
+            </div>
+            <div class="n_d_m_2">
+                <span>
+                    Lorem ipsxgfxdgdsfjha dfhld dsfh dofh ;aodfi um dolor sit amet consectetur adipisicing elit. 
+                </span>
+            </div>
+        </div>
         <div class="mn_cont">
             <div class="fr">
                 <div class="frinv">
@@ -66,7 +77,7 @@
                         <div class="pcom">
                             <div class="plike">
                                 <div class="pl1">
-                                    <a href="">LIKE</a>
+                                    <a href="">❤</a>
                                 </div>
                                 <div class="pl2">
                                     <span>3</span>
