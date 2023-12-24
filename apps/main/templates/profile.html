@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inst_PROF</title>
     <link rel="icon" type="image/png" href="/media/images/Inst_icon.png"/>
-    <link rel="stylesheet" href="{% static 'css/main_styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/prof_styles.css' %}">
+    <link rel="stylesheet" href="/static/css/main_style.css">   
+    <link rel="stylesheet" href="/static/css/prof_style.css">   
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -42,11 +42,13 @@
         </nav>
         <div class="n_d_m">
             <div class="n_d_m_1">
-                <span class="name">Selno Ron</span>
+                {% if user.name != None %}
+                <span class="name">{{ user.name }}</span>
+                {% endif %}
             </div>
             <div class="n_d_m_2">
                 <span>
-                    Lorem ipsxgfxdgdsfjha dfhld dsfh dofh ;aodfi um dolor sit amet consectetur adipisicing elit. 
+                    {{ user.description }}
                 </span>
             </div>
         </div>
@@ -54,22 +56,23 @@
             <div class="fr">
                 <div class="frinv">
                     
-                    <div class="post">
+                    {% for post in posts %}
+                    <div class="post" id="{{ post.pk }}">
                         <div class="pfr">
                             <div class="prf1">
                                 <img 
-                                    src="https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2021/11/avatar-2536561.jpg?tf=3840x" 
+                                    src="{{ post.author.avatar }}" 
                                     alt="hello"
                                     class="pav"
                                 >
                             </div>
                             <div class="prf2">
-                                <span>selnoron</span>
+                                <span>{{ post.author.nickname }}</span>
                             </div>
                         </div>
                         <div class="pimg">
                             <img 
-                                src="https://mir-s3-cdn-cf.behance.net/project_modules/2800_opt_1/58f60527666431.56368c2348eca.jpg" 
+                                src="{{ post.file }}" 
                                 alt=""
                                 class="pima"
                             >
@@ -77,13 +80,13 @@
                         <div class="pcom">
                             <div class="plike">
                                 <div class="pl1">
-                                    <a href="">❤</a>
+                                    <a href="/inst/post/{{ post.pk }}/like/">❤</a>
                                 </div>
                                 <div class="pl2">
-                                    <span>3</span>
+                                    <span>{{ post.likes }}</span>
                                 </div>
                                 <div class="pl3">
-                                    <a href="" class="pll1">
+                                    <a href="/inst/post/{{ post.pk }}/comm/" class="pll1">
                                         <span class="pll1s">comments</span>
                                     </a>
                                 </div>
@@ -91,22 +94,28 @@
                         </div>
                     </div>
                     <br>
+                    {% endfor %}
         
                 </div>
             </div>
+            {% if user.nickname == session %}
             <div class="sc">
                 <div class="sc_ad">
                     <div class="sd">
-                        <a href="">create post</a>
+                        <a href="/inst/mk_pos/">create post</a>
                     </div>
                     <div class="sd">
-                        <a href="">create story</a>
+                        <a href="/inst/mk_his/">create story</a>
                     </div>
                     <div class="sd">
-                        <a href="">follow someone</a>
+                        <a href="/inst/us/list/">follow someone</a>
+                    </div>
+                    <div class="sd">
+                        <a href="/dis/" id="logou">log out</a>
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </main>
 </body>

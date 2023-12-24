@@ -113,6 +113,9 @@ class Followers(models.Model):
         on_delete=models.CASCADE
     )
 
+    class Meta:
+        unique_together = ['follower', 'following']
+
 
 class Publications(models.Model):
     class Types(models.TextChoices):

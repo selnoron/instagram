@@ -1,4 +1,4 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,20 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inst-HIS</title>
     <link rel="icon" type="image/png" href="/media/images/Inst_icon.png"/>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="main2">
-        <form action="#" class="invis" method="post"> {% csrf_token %}
+        <form action="" class="invis" method="post" enctype="multipart/form-data"> {% csrf_token %}
             <div class="dm"> <!-- password -->
                 <div>
                     <span class="r2">choose file</span><br>
-                    <input type="file" name="password" class="em3">
+                    <input type="file" name="file" class="em3">
                 </div>
             </div>
             <div class="dm"> <!-- submit -->
                 <div>
-                    <br>
                     <input type="submit" value="create" class="but">
                 </div>
             </div>

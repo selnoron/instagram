@@ -1,4 +1,4 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inst-PUB</title>
     <link rel="icon" type="image/png" href="/media/images/Inst_icon.png"/>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="main2">
-        <form action="#" class="invis" method="post"> {% csrf_token %}
+        <form action="" class="invis" method="post" enctype="multipart/form-data"> {% csrf_token %}
             <div class="dm"> <!-- email -->
                 <div>
                     <span class="r4">choose type of publication</span><br>
-                    <input type="radio" class="em1" name="ty" id="type"> 
+                    <input type="radio" class="em1" name="ty" id="type" value="image"> 
                     <span for="type">image</span> <br>
-                    <input type="radio" class="em2" name="ty" id="type">
+                    <input type="radio" class="em2" name="ty" id="type" value="reel">
                     <span for="type">reel</span>
                 </div>
             </div>

@@ -106,3 +106,8 @@ nav {
 .n_d_m_2 span {
     width: 60%;
 }
+
+.logou:hover {
+    border-bottom: 3px transparent solid;
+    border-image: linear-gradient(to right, #ffb31c, #db7070, rgb(55, 12, 175)) 30;
+}
