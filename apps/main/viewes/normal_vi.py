@@ -372,25 +372,15 @@ class MkPosView(View):
         files: dict = request.FILES
 
         main_image: InMemoryUploadedFile = None
-        print(files)
         if files != {}:
-            main_image = files.get('avatar')
+            main_image = files.get('file')
             main_image.name = f'{uuid.uuid1()}.png'
-        else:
-            main_image = 'avatars/unknown.png'
-        print(main_image)
         try:
-            if data.get('password') == data.get('repeat_password'):
-                MyUser.objects.create_user(
-                    email=data.get("email"),
-                    nickname=data.get("nickname"),
-                    name=data.get("name"),
-                    description=data.get("description"),
-                    avatar=main_image,
-                    password=data.get("password")
-                )
-                return redirect('/auth/')
-            else:
-                return redirect("/")
+            Publications.objects.create(
+                p_type=data.get("ty"),
+                author=MyUser.objects.get(email=request.session["user"].get("email")),
+                file=main_image
+            )
+            return redirect('/inst/')
         except MyUser.DoesNotExist:
             raise ValidationError('Object Does NOT exists', code=404)
