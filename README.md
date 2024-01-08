@@ -1,6 +1,6 @@
 # DJANGO INSTAGRAM PET PROJECT
 
-# # HOW TO START
+## HOW TO START
 >pip install -r requirements.txt
 >
 >py manage.py generate
